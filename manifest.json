@@ -65,7 +65,51 @@
       ],
       "returnType": "Promise<number>",
       "example": "await execute({ service: 'example-text-processor', method: 'countWords', params: { text: 'hello world' } })"
+    },
+    {
+      "name": "applyDefaultCase",
+      "description": "根据配置应用默认大小写转换",
+      "parameters": [
+        {
+          "name": "text",
+          "type": "string",
+          "required": true,
+          "description": "要转换的文本"
+        }
+      ],
+      "returnType": "Promise<string>",
+      "example": "await execute({ service: 'example-text-processor', method: 'applyDefaultCase', params: { text: 'Hello World' } })"
     }
   ],
+  "settingsSchema": {
+    "version": "1.0.0",
+    "properties": {
+      "prefix": {
+        "type": "string",
+        "default": "",
+        "label": "文本前缀",
+        "description": "处理文本时自动添加的前缀"
+      },
+      "suffix": {
+        "type": "string",
+        "default": "",
+        "label": "文本后缀",
+        "description": "处理文本时自动添加的后缀"
+      },
+      "enablePrefix": {
+        "type": "boolean",
+        "default": true,
+        "label": "启用前缀/后缀",
+        "description": "是否在处理文本时应用前缀和后缀"
+      },
+      "defaultCase": {
+        "type": "string",
+        "default": "upper",
+        "label": "默认大小写",
+        "description": "默认的大小写转换方式",
+        "enum": ["upper", "lower", "none"]
+      }
+    }
+  },
   "permissions": []
 }
