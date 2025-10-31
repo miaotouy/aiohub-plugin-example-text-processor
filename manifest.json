@@ -1,0 +1,71 @@
+{
+  "id": "example-text-processor",
+  "name": "示例文本处理器",
+  "version": "1.0.0",
+  "description": "一个简单的文本处理插件示例，用于演示插件系统的功能",
+  "author": "AIO Hub Team",
+  "host": {
+    "appVersion": ">=2.0.0"
+  },
+  "type": "javascript",
+  "main": "index.js",
+  "methods": [
+    {
+      "name": "toUpperCase",
+      "description": "将文本转换为大写",
+      "parameters": [
+        {
+          "name": "text",
+          "type": "string",
+          "required": true,
+          "description": "要转换的文本"
+        }
+      ],
+      "returnType": "Promise<string>",
+      "example": "await execute({ service: 'example-text-processor', method: 'toUpperCase', params: { text: 'hello' } })"
+    },
+    {
+      "name": "toLowerCase",
+      "description": "将文本转换为小写",
+      "parameters": [
+        {
+          "name": "text",
+          "type": "string",
+          "required": true,
+          "description": "要转换的文本"
+        }
+      ],
+      "returnType": "Promise<string>",
+      "example": "await execute({ service: 'example-text-processor', method: 'toLowerCase', params: { text: 'HELLO' } })"
+    },
+    {
+      "name": "reverse",
+      "description": "反转文本",
+      "parameters": [
+        {
+          "name": "text",
+          "type": "string",
+          "required": true,
+          "description": "要反转的文本"
+        }
+      ],
+      "returnType": "Promise<string>",
+      "example": "await execute({ service: 'example-text-processor', method: 'reverse', params: { text: 'hello' } })"
+    },
+    {
+      "name": "countWords",
+      "description": "统计单词数量",
+      "parameters": [
+        {
+          "name": "text",
+          "type": "string",
+          "required": true,
+          "description": "要统计的文本"
+        }
+      ],
+      "returnType": "Promise<number>",
+      "example": "await execute({ service: 'example-text-processor', method: 'countWords', params: { text: 'hello world' } })"
+    }
+  ],
+  "permissions": []
+}
