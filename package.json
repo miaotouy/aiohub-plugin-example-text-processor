@@ -1,0 +1,25 @@
+{
+  "name": "example-text-processor",
+  "version": "1.0.0",
+  "description": "示例文本处理器 JavaScript 插件",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "package": "node build.js --package",
+    "dev": "tsc --watch",
+    "clean": "rimraf dist index.js *.zip"
+  },
+  "keywords": [
+    "aio-hub",
+    "plugin",
+    "javascript",
+    "text-processor"
+  ],
+  "author": "AIO Hub Team",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "archiver": "^7.0.1"
+  }
+}
