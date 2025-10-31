@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "description": "一个简单的文本处理插件示例，用于演示插件系统的功能",
   "author": "AIO Hub Team",
+  "icon": "📝",
   "host": {
     "appVersion": ">=2.0.0"
   },
