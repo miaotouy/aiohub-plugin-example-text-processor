@@ -27,22 +27,21 @@
       <div class="panel input-panel">
         <div class="panel-header">
           <span class="panel-title">输入文本</span>
-          <span class="panel-info">{{ inputText.length }} 字符</span>
+          <div class="panel-header-actions">
+            <span class="panel-info">{{ inputText.length }} 字符</span>
+            <el-button @click="pasteText" size="small" text>
+              <el-icon><DocumentCopy /></el-icon>
+              粘贴
+            </el-button>
+          </div>
         </div>
         <div class="panel-content">
           <el-input
             v-model="inputText"
             type="textarea"
-            :rows="12"
             placeholder="请输入要处理的文本..."
-            resize="vertical"
+            resize="none"
           />
-          <div class="action-buttons">
-            <el-button @click="pasteText" size="small">
-              <el-icon><DocumentCopy /></el-icon>
-              粘贴
-            </el-button>
-          </div>
         </div>
       </div>
 
@@ -53,7 +52,7 @@
           @click="processText"
           :loading="processing"
           :disabled="!inputText.trim()"
-          size="large"
+          size="default"
           circle
         >
           <el-icon v-if="!processing"><Right /></el-icon>
@@ -72,7 +71,13 @@
       <div class="panel result-panel">
         <div class="panel-header">
           <span class="panel-title">处理结果</span>
-          <span class="panel-info">{{ outputText.length }} 字符</span>
+          <div class="panel-header-actions">
+            <span class="panel-info">{{ outputText.length }} 字符</span>
+            <el-button v-if="outputText" @click="copyResult" size="small" text>
+              <el-icon><CopyDocument /></el-icon>
+              复制结果
+            </el-button>
+          </div>
         </div>
         <div class="panel-content">
           <!-- 错误提示 -->
@@ -90,22 +95,14 @@
             v-else-if="outputText"
             v-model="outputText"
             type="textarea"
-            :rows="12"
             readonly
-            resize="vertical"
+            resize="none"
           />
 
           <!-- 空状态 -->
           <div v-else class="empty-state">
             <el-icon class="empty-icon"><DataLine /></el-icon>
             <p class="empty-text">处理结果将显示在这里</p>
-          </div>
-
-          <div v-if="outputText" class="action-buttons">
-            <el-button @click="copyResult" size="small">
-              <el-icon><CopyDocument /></el-icon>
-              复制结果
-            </el-button>
           </div>
         </div>
       </div>
@@ -129,11 +126,11 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { 
-  Delete, 
-  DocumentCopy, 
-  CopyDocument, 
-  Right, 
+import {
+  Delete,
+  DocumentCopy,
+  CopyDocument,
+  Right,
   Refresh,
   DataLine
 } from '@element-plus/icons-vue';
@@ -243,6 +240,8 @@ const swapTexts = () => {
   overflow: hidden;
   background-color: var(--bg-color);
   box-sizing: border-box;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
 }
 
 /* 工具栏 */
@@ -253,7 +252,6 @@ const swapTexts = () => {
   padding: 12px 20px;
   background-color: var(--card-bg);
   border-bottom: 1px solid var(--border-color);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   flex-shrink: 0;
 }
 
@@ -293,7 +291,7 @@ const swapTexts = () => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 16px;
   padding: 20px;
   background-color: var(--card-bg);
   border-left: 1px solid var(--border-color);
@@ -309,6 +307,12 @@ const swapTexts = () => {
   background-color: var(--card-bg);
   border-bottom: 1px solid var(--border-color);
   flex-shrink: 0;
+}
+
+.panel-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .panel-title {
@@ -327,14 +331,16 @@ const swapTexts = () => {
   display: flex;
   flex-direction: column;
   padding: 16px;
-  overflow: auto;
-  gap: 12px;
+  overflow: hidden;
 }
 
-.action-buttons {
-  display: flex;
-  gap: 8px;
-  flex-shrink: 0;
+.panel-content :deep(.el-textarea) {
+  flex: 1;
+  min-height: 0;
+}
+
+.panel-content :deep(.el-textarea__inner) {
+  height: 100%;
 }
 
 /* 空状态 */
