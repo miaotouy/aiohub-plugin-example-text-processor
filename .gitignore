@@ -1,13 +1,23 @@
-# 编译产物
-index.js
-index.js.map
+# Rust 构建产物
+/target/
+**/*.rs.bk
+*.pdb
+
+# Vue 组件编译产物
+FileHasher.js
+FileHasher.js.map
 
 # 打包产物
 /dist/
+/dist-ui/
 *.zip
 
-# 依赖
+# 前端依赖
 node_modules/
+bun.lockb
+
+# Cargo 锁文件（库项目通常不提交，但可执行文件可以提交）
+# Cargo.lock
 
 # IDE
 .vscode/
