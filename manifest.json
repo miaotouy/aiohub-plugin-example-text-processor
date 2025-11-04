@@ -115,7 +115,7 @@
   "permissions": [],
   "ui": {
     "displayName": "文本处理器",
-    "component": "TextProcessor.js",
+    "component": "TextProcessor.vue",
     "icon": "📝"
   }
 }
