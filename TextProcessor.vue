@@ -393,6 +393,11 @@ const swapTexts = () => {
   margin-bottom: 4px;
 }
 
+/* 去除el-button自带的间距，修复按钮布局无法对齐的问题 */
+:deep(.el-button) {
+  margin-left: 0px;
+}
+
 /* 响应式布局 */
 @media (max-width: 1024px) {
   .content-container {
