@@ -18,20 +18,38 @@ const args = process.argv.slice(2);
 console.log('🔨 构建 JavaScript 插件: example-text-processor');
 console.log('');
 
-// 编译 TypeScript
+// 编译 TypeScript (使用 Bun)
 function buildTypeScript() {
   console.log('📦 编译 TypeScript...');
   
   try {
-    execSync('tsc', { 
+    execSync('bun build index.ts --outfile=index.js --target=browser --format=iife', {
       stdio: 'inherit',
-      cwd: __dirname 
+      cwd: __dirname
     });
     
     console.log('✅ TypeScript 编译完成');
     return true;
   } catch (error) {
     console.error('❌ TypeScript 编译失败:', error.message);
+    return false;
+  }
+}
+
+// 编译 Vue 组件
+function buildVueComponent() {
+  console.log('📦 编译 Vue 组件...');
+  
+  try {
+    execSync('vite build', {
+      stdio: 'inherit',
+      cwd: __dirname
+    });
+    
+    console.log('✅ Vue 组件编译完成');
+    return true;
+  } catch (error) {
+    console.error('❌ Vue 组件编译失败:', error.message);
     return false;
   }
 }
@@ -49,22 +67,39 @@ function packagePlugin() {
   }
   fs.mkdirSync(distDir, { recursive: true });
 
-  // 复制编译后的 JS 文件
+  // 复制编译后的 index.js
   const indexJsPath = path.join(__dirname, 'index.js');
   if (!fs.existsSync(indexJsPath)) {
     console.error('❌ 找不到编译后的 index.js 文件');
     process.exit(1);
   }
-  
   fs.copyFileSync(indexJsPath, path.join(distDir, 'index.js'));
   console.log('   ✓ 复制 index.js');
 
-  // 复制 manifest.json
-  fs.copyFileSync(
-    path.join(__dirname, 'manifest.json'),
-    path.join(distDir, 'manifest.json')
+  // 复制编译后的 Vue 组件
+  const componentJsPath = path.join(__dirname, 'dist-ui', 'TextProcessor.js');
+  if (!fs.existsSync(componentJsPath)) {
+    console.error('❌ 找不到编译后的 TextProcessor.js 文件');
+    process.exit(1);
+  }
+  fs.copyFileSync(componentJsPath, path.join(distDir, 'TextProcessor.js'));
+  console.log('   ✓ 复制 TextProcessor.js');
+
+  // 复制并修改 manifest.json（将 .vue 改为 .js）
+  const manifestPath = path.join(__dirname, 'manifest.json');
+  const manifestContent = fs.readFileSync(manifestPath, 'utf-8');
+  const manifest = JSON.parse(manifestContent);
+  
+  // 如果 UI 组件是 .vue 文件，改为 .js
+  if (manifest.ui && manifest.ui.component) {
+    manifest.ui.component = manifest.ui.component.replace(/\.vue$/, '.js');
+  }
+  
+  fs.writeFileSync(
+    path.join(distDir, 'manifest.json'),
+    JSON.stringify(manifest, null, 2)
   );
-  console.log('   ✓ 复制 manifest.json');
+  console.log('   ✓ 复制并处理 manifest.json（.vue → .js）');
 
   // 复制 README（如果存在）
   const readmePath = path.join(__dirname, 'README.md');
@@ -136,9 +171,14 @@ async function createZipArchive(distDir) {
 // 主流程
 async function main() {
   // 编译 TypeScript
-  const buildSuccess = buildTypeScript();
-  
-  if (!buildSuccess) {
+  const tsSuccess = buildTypeScript();
+  if (!tsSuccess) {
+    process.exit(1);
+  }
+
+  // 编译 Vue 组件
+  const vueSuccess = buildVueComponent();
+  if (!vueSuccess) {
     process.exit(1);
   }
 

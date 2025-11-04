@@ -1,6 +1,6 @@
-# Example Text Processor - JavaScript 插件示例
+# 示例文本处理器插件
 
-这是一个基于 TypeScript 的 JavaScript 插件示例，用于演示插件系统的功能和配置管理。
+一个演示 JavaScript 插件系统功能的示例插件，包含完整的 UI 和配置系统集成。
 
 ## 功能特性
 
@@ -8,175 +8,124 @@
 - ✅ 文本反转
 - ✅ 单词统计
 - ✅ 可配置的前缀/后缀
-- ✅ 支持插件配置系统
+- ✅ 完整的 Vue UI 界面
+- ✅ 支持开发和生产环境
 
-## 开发环境
+## 开发模式
+
+在开发模式下，插件无需构建即可使用：
+
+```bash
+# 将插件放在主应用的 plugins/ 目录下
+# 启动主应用
+npm run dev
+```
+
+插件会自动加载，修改代码后会立即生效（HMR）。
+
+## 构建插件
 
 ### 前置要求
 
-- Node.js 18+ 或 Bun
-- TypeScript 5.3+
-
-### 开发模式
-
-在开发模式下，直接使用 TypeScript 源码（`index.ts`），主应用会从 `plugins/example-text-processor/` 目录加载：
-
 ```bash
-# 编译 TypeScript（生成 index.js）
-bun run build
-
-# 或使用 watch 模式（自动重新编译）
-bun run dev
+# 安装依赖
+bun install
 ```
 
-编译后会在插件目录生成 `index.js` 文件。
-
-## 生产构建
-
-### 打包发布
-
-生成可分发的插件包：
+### 构建步骤
 
 ```bash
-# 安装依赖（首次）
-bun install
+# 仅构建（不打包）
+bun run build
 
-# 打包插件
+# 构建并打包成 ZIP
 bun run package
 ```
 
-这会执行以下操作：
+构建过程会：
+1. 使用 Bun 编译 `index.ts` → `index.js`
+2. 使用 Vite 编译 `TextProcessor.vue` → `TextProcessor.js`
+3. 自动修改 `manifest.json` 中的组件路径（`.vue` → `.js`）
+4. 将所有文件打包到 `dist/` 目录
+5. （可选）创建 ZIP 压缩包用于分发
 
-1. **编译 TypeScript** 为 `index.js`
-2. **创建 `dist/` 目录**，包含：
-   ```
-   dist/
-   ├── index.js        (编译后的 JS 文件)
-   ├── manifest.json   (插件清单)
-   └── README.md       (文档)
-   ```
-3. **生成 `.zip` 压缩包**：`example-text-processor-v1.0.0.zip`
-
-**最终产物**：
-- `dist/` - 未压缩的插件目录
-- `example-text-processor-v1.0.0.zip` - 可直接分发的压缩包
-
-## 插件使用
-
-在主应用中调用此插件：
-
-```typescript
-import { executor } from '@/services';
-
-// 转换为大写
-const result = await executor.execute({
-  service: 'example-text-processor',
-  method: 'toUpperCase',
-  params: {
-    text: 'hello world'
-  }
-});
-
-console.log(result); // "HELLO WORLD"
-
-// 统计单词数
-const count = await executor.execute({
-  service: 'example-text-processor',
-  method: 'countWords',
-  params: {
-    text: 'hello world'
-  }
-});
-
-console.log(count); // 2
-```
-
-## 配置系统
-
-此插件展示了如何使用配置系统：
-
-```typescript
-// 在插件中读取配置
-const prefix = await context.settings.get<string>('prefix');
-const enablePrefix = await context.settings.get<boolean>('enablePrefix');
-
-// 获取所有配置
-const allSettings = await context.settings.getAll();
-
-// 设置配置值
-await context.settings.set('prefix', '【重要】');
-```
-
-用户可以在"扩展管理 > 已安装 > 插件设置"中配置：
-- **文本前缀**：处理后的文本自动添加前缀
-- **文本后缀**：处理后的文本自动添加后缀
-- **启用前缀/后缀**：是否应用前缀和后缀
-- **默认大小写**：默认的大小写转换方式
-
-## 目录结构
+### 输出结构
 
 ```
-example-text-processor/
-├── index.ts                           # TypeScript 源码
-├── index.js                           # 编译产物（gitignore）
-├── dist/                              # 打包产物（gitignore）
-│   ├── index.js
-│   ├── manifest.json
-│   └── README.md
-├── example-text-processor-v1.0.0.zip  # 发布包（gitignore）
-├── build.js                           # 构建脚本
-├── tsconfig.json                      # TypeScript 配置
-├── package.json                       # 项目配置
-├── manifest.json                      # 插件清单
-└── README.md
+dist/
+├── manifest.json       # 自动修改后的清单（component: "TextProcessor.js"）
+├── index.js           # 编译后的插件逻辑
+├── TextProcessor.js   # 编译后的 UI 组件
+└── README.md          # 说明文档
 ```
 
-## API 文档
+## 文件说明
 
-### toUpperCase
+- `manifest.json` - 插件清单（开发模式使用 `.vue`）
+- `index.ts` - 插件核心逻辑
+- `TextProcessor.vue` - UI 组件（开发模式）
+- `vite.config.js` - Vue 组件构建配置
+- `build.js` - 完整构建脚本
+- `tsconfig.json` - TypeScript 配置
 
+## 插件方法
+
+### `toUpperCase(params)`
 将文本转换为大写。
 
 **参数**：
-- `text` (string, required): 要转换的文本
+- `text` (string): 要转换的文本
 
 **返回**: `Promise<string>`
 
-### toLowerCase
-
+### `toLowerCase(params)`
 将文本转换为小写。
 
 **参数**：
-- `text` (string, required): 要转换的文本
+- `text` (string): 要转换的文本
 
 **返回**: `Promise<string>`
 
-### reverse
-
+### `reverse(params)`
 反转文本。
 
 **参数**：
-- `text` (string, required): 要反转的文本
+- `text` (string): 要反转的文本
 
 **返回**: `Promise<string>`
 
-### countWords
-
+### `countWords(params)`
 统计单词数量。
 
 **参数**：
-- `text` (string, required): 要统计的文本
+- `text` (string): 要统计的文本
 
 **返回**: `Promise<number>`
 
-### applyDefaultCase
-
+### `applyDefaultCase(params)`
 根据配置应用默认大小写转换。
 
 **参数**：
-- `text` (string, required): 要转换的文本
+- `text` (string): 要转换的文本
 
 **返回**: `Promise<string>`
+
+## 配置项
+
+在插件设置中可配置：
+
+- **文本前缀** - 处理文本时自动添加的前缀
+- **文本后缀** - 处理文本时自动添加的后缀
+- **启用前缀/后缀** - 是否应用前缀和后缀
+- **默认大小写** - 默认的大小写转换方式（upper/lower/none）
+
+## 技术栈
+
+- TypeScript
+- Vue 3 (Composition API)
+- Element Plus
+- Bun (TypeScript 编译)
+- Vite (Vue 组件编译)
 
 ## 许可证
 

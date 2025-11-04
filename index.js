@@ -32,23 +32,56 @@
   __export(exports_example_text_processor, {
     default: () => example_text_processor_default
   });
-  async function toUpperCase({ text }) {
-    return text.toUpperCase();
+  async function applyPrefixSuffix(text, context) {
+    if (!context)
+      return text;
+    const enablePrefix = await context.settings.get("enablePrefix");
+    if (!enablePrefix)
+      return text;
+    const prefix = await context.settings.get("prefix") || "";
+    const suffix = await context.settings.get("suffix") || "";
+    return `${prefix}${text}${suffix}`;
   }
-  async function toLowerCase({ text }) {
-    return text.toLowerCase();
+  async function toUpperCase({ text, context }) {
+    const result = text.toUpperCase();
+    return await applyPrefixSuffix(result, context);
   }
-  async function reverse({ text }) {
-    return text.split("").reverse().join("");
+  async function toLowerCase({ text, context }) {
+    const result = text.toLowerCase();
+    return await applyPrefixSuffix(result, context);
   }
-  async function countWords({ text }) {
+  async function reverse({ text, context }) {
+    const result = text.split("").reverse().join("");
+    return await applyPrefixSuffix(result, context);
+  }
+  async function countWords({ text, context }) {
     const words = text.trim().split(/\s+/);
     return words.filter((word) => word.length > 0).length;
+  }
+  async function applyDefaultCase({ text, context }) {
+    if (!context)
+      return text;
+    const defaultCase = await context.settings.get("defaultCase");
+    let result = text;
+    switch (defaultCase) {
+      case "upper":
+        result = text.toUpperCase();
+        break;
+      case "lower":
+        result = text.toLowerCase();
+        break;
+      case "none":
+      default:
+        result = text;
+        break;
+    }
+    return await applyPrefixSuffix(result, context);
   }
   var example_text_processor_default = {
     toUpperCase,
     toLowerCase,
     reverse,
-    countWords
+    countWords,
+    applyDefaultCase
   };
 })();
