@@ -30,7 +30,7 @@ export default defineConfig({
         }
       }
     },
-    outDir: 'dist-ui',
-    emptyOutDir: true
+    outDir: 'dist',
+    emptyOutDir: false
   }
 });
