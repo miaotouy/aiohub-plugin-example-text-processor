@@ -1,5 +1,8 @@
 # 示例文本处理器插件
 
+> [!NOTE]
+> **本插件是 [AIO Hub](https://github.com/miaotouy/aio-hub) 的插件示例。**
+
 一个演示 JavaScript 插件系统功能的示例插件，包含完整的 UI 和配置系统集成。
 
 ## 功能特性
