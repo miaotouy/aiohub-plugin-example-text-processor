@@ -9,7 +9,7 @@ interface TextParams {
   text: string;
 }
 
-const config = pluginConfigService.getPluginConfig('example-text-processor');
+const config = pluginConfigService.createPluginSettingsAPI('example-text-processor');
 
 /**
  * 应用前缀和后缀

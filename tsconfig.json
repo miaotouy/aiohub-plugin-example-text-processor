@@ -27,6 +27,7 @@
   },
   "include": [
     "TextProcessor.vue",
+    "index.ts",
     "shims-vue.d.ts",
     "src/**/*.ts",
     "src/**/*.d.ts"

@@ -4,11 +4,16 @@ import { resolve } from 'path';
 
 export default defineConfig({
   plugins: [vue()],
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, '../../src')
+    }
+  },
   build: {
     lib: {
-      entry: resolve(__dirname, 'TextProcessor.vue'),
-      name: 'TextProcessor',
-      fileName: 'TextProcessor',
+      entry: resolve(__dirname, 'index.ts'),
+      name: 'ExampleTextProcessor',
+      fileName: 'example-text-processor',
       formats: ['es']
     },
     rollupOptions: {
