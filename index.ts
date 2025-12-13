@@ -3,7 +3,6 @@
  *
  * 这是一个简单的演示插件，展示了如何实现 JS 插件和使用配置系统
  */
-:6:
 import { pluginConfigService } from '@/services/plugin-config.service';
 
 interface TextParams {
