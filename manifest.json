@@ -7,82 +7,11 @@
   "icon": "📝",
   "tags": ["示例", "文本处理", "工具"],
   "host": {
-    "appVersion": ">=2.0.0"
+    "appVersion": ">=0.4.6",
+    "apiVersion": 2
   },
   "type": "javascript",
-  "main": "index.js",
-  "methods": [
-    {
-      "name": "toUpperCase",
-      "description": "将文本转换为大写",
-      "parameters": [
-        {
-          "name": "text",
-          "type": "string",
-          "required": true,
-          "description": "要转换的文本"
-        }
-      ],
-      "returnType": "Promise<string>",
-      "example": "await execute({ service: 'example-text-processor', method: 'toUpperCase', params: { text: 'hello' } })"
-    },
-    {
-      "name": "toLowerCase",
-      "description": "将文本转换为小写",
-      "parameters": [
-        {
-          "name": "text",
-          "type": "string",
-          "required": true,
-          "description": "要转换的文本"
-        }
-      ],
-      "returnType": "Promise<string>",
-      "example": "await execute({ service: 'example-text-processor', method: 'toLowerCase', params: { text: 'HELLO' } })"
-    },
-    {
-      "name": "reverse",
-      "description": "反转文本",
-      "parameters": [
-        {
-          "name": "text",
-          "type": "string",
-          "required": true,
-          "description": "要反转的文本"
-        }
-      ],
-      "returnType": "Promise<string>",
-      "example": "await execute({ service: 'example-text-processor', method: 'reverse', params: { text: 'hello' } })"
-    },
-    {
-      "name": "countWords",
-      "description": "统计单词数量",
-      "parameters": [
-        {
-          "name": "text",
-          "type": "string",
-          "required": true,
-          "description": "要统计的文本"
-        }
-      ],
-      "returnType": "Promise<number>",
-      "example": "await execute({ service: 'example-text-processor', method: 'countWords', params: { text: 'hello world' } })"
-    },
-    {
-      "name": "applyDefaultCase",
-      "description": "根据配置应用默认大小写转换",
-      "parameters": [
-        {
-          "name": "text",
-          "type": "string",
-          "required": true,
-          "description": "要转换的文本"
-        }
-      ],
-      "returnType": "Promise<string>",
-      "example": "await execute({ service: 'example-text-processor', method: 'applyDefaultCase', params: { text: 'Hello World' } })"
-    }
-  ],
+  "main": "index.ts",
   "settingsSchema": {
     "version": "1.0.0",
     "properties": {
