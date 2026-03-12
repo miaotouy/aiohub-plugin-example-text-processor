@@ -13,32 +13,70 @@
   "type": "javascript",
   "main": "index.ts",
   "settingsSchema": {
-    "version": "1.0.0",
+    "version": "2.0.0",
     "properties": {
       "prefix": {
-        "type": "string",
-        "default": "",
+        "id": "prefix",
         "label": "文本前缀",
-        "description": "处理文本时自动添加的前缀"
+        "component": "ElInput",
+        "modelPath": "prefix",
+        "hint": "处理文本时自动添加的前缀",
+        "defaultValue": "",
+        "layout": "block",
+        "props": {
+          "placeholder": "请输入文本前缀"
+        },
+        "keywords": "prefix 文本前缀 前缀"
       },
       "suffix": {
-        "type": "string",
-        "default": "",
+        "id": "suffix",
         "label": "文本后缀",
-        "description": "处理文本时自动添加的后缀"
+        "component": "ElInput",
+        "modelPath": "suffix",
+        "hint": "处理文本时自动添加的后缀",
+        "defaultValue": "",
+        "layout": "block",
+        "props": {
+          "placeholder": "请输入文本后缀"
+        },
+        "keywords": "suffix 文本后缀 后缀"
       },
       "enablePrefix": {
-        "type": "boolean",
-        "default": true,
+        "id": "enablePrefix",
         "label": "启用前缀/后缀",
-        "description": "是否在处理文本时应用前缀和后缀"
+        "component": "ElSwitch",
+        "modelPath": "enablePrefix",
+        "hint": "是否在处理文本时应用前缀和后缀",
+        "defaultValue": true,
+        "layout": "inline",
+        "keywords": "enablePrefix 启用前缀 启用后缀 开关"
       },
       "defaultCase": {
-        "type": "string",
-        "default": "upper",
+        "id": "defaultCase",
         "label": "默认大小写",
-        "description": "默认的大小写转换方式",
-        "enum": ["upper", "lower", "none"]
+        "component": "ElSelect",
+        "modelPath": "defaultCase",
+        "hint": "默认的大小写转换方式",
+        "defaultValue": "upper",
+        "layout": "block",
+        "props": {
+          "placeholder": "请选择默认大小写"
+        },
+        "options": [
+          {
+            "label": "大写",
+            "value": "upper"
+          },
+          {
+            "label": "小写",
+            "value": "lower"
+          },
+          {
+            "label": "不转换",
+            "value": "none"
+          }
+        ],
+        "keywords": "defaultCase 默认大小写 大小写转换"
       }
     }
   },
