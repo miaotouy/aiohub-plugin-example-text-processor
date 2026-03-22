@@ -1,16 +1,16 @@
 {
   "name": "example-text-processor",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "示例文本处理器 JavaScript 插件",
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "build": "node build.js",
+    "build": "bun build.js",
     "build:ts": "bun build index.ts --outfile=index.js --target=browser --format=iife",
-    "build:vue": "vite build",
-    "package": "node build.js --package",
+    "build:vue": "bun x vite build",
+    "package": "bun build.js --package",
     "dev": "bun build index.ts --outfile=index.js --target=browser --format=iife --watch",
-    "clean": "rimraf dist dist-ui index.js *.zip"
+    "clean": "bun x rimraf dist dist-ui index.js *.zip"
   },
   "keywords": [
     "aio-hub",

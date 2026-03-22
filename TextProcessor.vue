@@ -125,65 +125,62 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref } from "vue";
 import {
   Delete,
   DocumentCopy,
   CopyDocument,
   Right,
   Refresh,
-  DataLine
-} from '@element-plus/icons-vue';
-import { customMessage } from '@/utils/customMessage';
+  DataLine,
+} from "@element-plus/icons-vue";
+import { customMessage, execute } from "aiohub-sdk";
 
-// 动态导入 executor
-const { execute } = await import('@/services/executor.ts');
-
-const inputText = ref('');
-const outputText = ref('');
-const selectedOperation = ref('toUpperCase');
-const error = ref('');
+const inputText = ref("");
+const outputText = ref("");
+const selectedOperation = ref("toUpperCase");
+const error = ref("");
 const processing = ref(false);
 
 // 可用的操作列表
 const operations = [
-  { label: '转换为大写', value: 'toUpperCase' },
-  { label: '转换为小写', value: 'toLowerCase' },
-  { label: '反转文本', value: 'reverse' },
-  { label: '统计单词', value: 'countWords' },
-  { label: '应用默认大小写', value: 'applyDefaultCase' }
+  { label: "转换为大写", value: "toUpperCase" },
+  { label: "转换为小写", value: "toLowerCase" },
+  { label: "反转文本", value: "reverse" },
+  { label: "统计单词", value: "countWords" },
+  { label: "应用默认大小写", value: "applyDefaultCase" },
 ];
 
 // 处理文本
 const processText = async () => {
   if (!inputText.value.trim()) {
-    error.value = '请输入要处理的文本';
+    error.value = "请输入要处理的文本";
     return;
   }
 
-  error.value = '';
+  error.value = "";
   processing.value = true;
 
   try {
     const result = await execute({
-      service: 'example-text-processor',
+      service: "example-text-processor",
       method: selectedOperation.value,
-      params: { text: inputText.value }
+      params: { text: inputText.value },
     });
 
     if (result.success) {
       // 处理返回结果
-      if (selectedOperation.value === 'countWords') {
+      if (selectedOperation.value === "countWords") {
         outputText.value = `单词数量: ${result.data}`;
       } else {
         outputText.value = result.data;
       }
-      customMessage.success('处理成功');
+      customMessage.success("处理成功");
     } else {
-      error.value = result.error.message || '处理文本失败';
+      error.value = result.error.message || "处理文本失败";
     }
   } catch (err: any) {
-    error.value = err.message || '处理文本失败';
+    error.value = err.message || "处理文本失败";
   } finally {
     processing.value = false;
   }
@@ -194,32 +191,32 @@ const copyResult = async () => {
   if (!outputText.value) return;
 
   try {
-    const { writeText } = await import('@tauri-apps/plugin-clipboard-manager');
+    const { writeText } = await import("@tauri-apps/plugin-clipboard-manager");
     await writeText(outputText.value);
-    customMessage.success('已复制到剪贴板');
+    customMessage.success("已复制到剪贴板");
   } catch (err) {
-    customMessage.error('复制失败');
+    customMessage.error("复制失败");
   }
 };
 
 // 清空
 const clearAll = () => {
-  inputText.value = '';
-  outputText.value = '';
-  error.value = '';
+  inputText.value = "";
+  outputText.value = "";
+  error.value = "";
 };
 
 // 粘贴文本
 const pasteText = async () => {
   try {
-    const { readText } = await import('@tauri-apps/plugin-clipboard-manager');
+    const { readText } = await import("@tauri-apps/plugin-clipboard-manager");
     const text = await readText();
     if (text) {
       inputText.value = text;
-      customMessage.success('已粘贴文本');
+      customMessage.success("已粘贴文本");
     }
   } catch (err) {
-    customMessage.error('粘贴失败');
+    customMessage.error("粘贴失败");
   }
 };
 

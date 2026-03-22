@@ -1,13 +1,13 @@
 {
   "id": "example-text-processor",
   "name": "示例文本处理器",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "一个简单的文本处理插件示例，用于演示插件系统的功能",
   "author": "AIO Hub Team",
   "icon": "📝",
   "tags": ["示例", "文本处理", "工具"],
   "host": {
-    "appVersion": ">=0.4.6",
+    "appVersion": ">=0.5.1",
     "apiVersion": 2
   },
   "type": "javascript",
